@@ -1,4 +1,4 @@
-package com.example.pictureapp.data
+package com.example.pictureapp.server
 
 data class PictureResponse (
     val message: String,

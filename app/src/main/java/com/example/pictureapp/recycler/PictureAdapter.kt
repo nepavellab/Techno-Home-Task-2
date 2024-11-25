@@ -9,7 +9,12 @@ import com.example.pictureapp.data.DataList
 import com.example.pictureapp.data.PictureItem
 import com.example.pictureapp.databinding.MediaItemBinding
 
-class PictureAdapter : RecyclerView.Adapter<PictureViewHolder>() {
+class PictureAdapter(
+    private val onLoad: () -> Unit
+) : RecyclerView.Adapter<PictureViewHolder>() {
+    companion object {
+        private const val LOAD_START_COUNT = 5
+    }
     private var pictureList = DataList.imageList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
@@ -25,15 +30,16 @@ class PictureAdapter : RecyclerView.Adapter<PictureViewHolder>() {
     override fun onBindViewHolder(holder: PictureViewHolder, position: Int) {
         val picture = pictureList[position]
         holder.bind(picture)
+        if (position == pictureList.size - LOAD_START_COUNT) {
+            onLoad()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun setPictures(pictures: MutableList<PictureItem>) {
-        val calculatedDiff = DiffUtil.calculateDiff(
+        /*val calculatedDiff = DiffUtil.calculateDiff(
             PictureDiffUtilCallback(pictureList, pictures)
-        )
-        println("!!!$pictureList")
-        println("!!!$pictures")
+        )*/
         pictureList = pictures
         //calculatedDiff.dispatchUpdatesTo(this)
         notifyDataSetChanged()

@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.pictureapp.databinding.ActivityMainBinding
 import com.example.pictureapp.viewmodel.PictureViewModel
-import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainFragment: MainFragment
     private lateinit var viewModel: PictureViewModel
     private lateinit var binding: ActivityMainBinding
+    companion object {
+        private const val INIT_IMAGE_COUNT = 50
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +27,7 @@ class MainActivity : AppCompatActivity() {
                 .beginTransaction()
                 .add(binding.main.id,  mainFragment)
                 .commit()
-        }
-
-        repeat(5) {
-            viewModel.loadPicture()
+            viewModel.loadPictures(INIT_IMAGE_COUNT)
         }
     }
 }

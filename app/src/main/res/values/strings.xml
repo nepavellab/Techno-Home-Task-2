@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PictureApp</string>
+    <string name="reload">Загрузить заново</string>
+    <string name="loadErrorMessage">Ошибка загрузки! Попробовать заново?</string>
 </resources>

@@ -7,15 +7,27 @@ import com.example.pictureapp.server.PictureRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class PictureViewModel : ViewModel() {
     val loadedPictures = MutableLiveData(DataList.imageList)
+    val isLoading = MutableLiveData(false)
+    val isError = MutableLiveData(false)
 
-    fun loadPicture() {
+    fun loadPictures(count: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val picture = PictureRepository.fetchData()
-            DataList.imageList.add(picture)
-            loadedPictures.postValue(DataList.imageList)
+            try {
+                isLoading.postValue(true)
+                repeat(count) {
+                    val picture = PictureRepository.fetchData()
+                    DataList.imageList.add(picture)
+                    loadedPictures.postValue(DataList.imageList)
+                }
+            } catch(exception: IOException) {
+                isError.postValue(true)
+            } finally {
+                isLoading.postValue(false)
+            }
         }
     }
 }
