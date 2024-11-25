@@ -1,18 +1,16 @@
 package com.example.pictureapp.recycler
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pictureapp.data.DataList
 import com.example.pictureapp.data.PictureItem
 import com.example.pictureapp.databinding.MediaItemBinding
 
 class PictureAdapter(
     private val onLoad: () -> Unit
 ) : RecyclerView.Adapter<PictureViewHolder>() {
-    private var pictureList = DataList.imageList
+    private var pictureList = mutableListOf<PictureItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
         return PictureViewHolder(
@@ -32,13 +30,11 @@ class PictureAdapter(
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun setPictures(pictures: MutableList<PictureItem>) {
-        /*val calculatedDiff = DiffUtil.calculateDiff(
+        val calculatedDiff = DiffUtil.calculateDiff(
             PictureDiffUtilCallback(pictureList, pictures)
-        )*/
+        )
         pictureList = pictures
-        //calculatedDiff.dispatchUpdatesTo(this)
-        notifyDataSetChanged()
+        calculatedDiff.dispatchUpdatesTo(this)
     }
 }

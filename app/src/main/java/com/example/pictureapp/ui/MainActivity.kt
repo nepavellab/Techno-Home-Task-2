@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: PictureViewModel
     private lateinit var binding: ActivityMainBinding
     companion object {
-        private const val INIT_IMAGE_COUNT = 50
+        private const val INIT_IMAGE_COUNT = 20
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
