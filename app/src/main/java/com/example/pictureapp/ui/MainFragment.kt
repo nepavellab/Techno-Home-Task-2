@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.pictureapp.databinding.FragmentMainBinding
 import com.example.pictureapp.recycler.PictureAdapter
@@ -21,7 +22,6 @@ class MainFragment(
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: PictureAdapter
     private lateinit var progressBar: ProgressBar
-    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,9 +39,23 @@ class MainFragment(
         setObservers()
     }
 
+    private fun createErrorFragment() {
+        val reloadFragment = ReloadFragment {
+            viewModel.loadPictures(LOAD_IMAGE_COUNT)
+        }
+
+        parentFragmentManager
+            .beginTransaction()
+            .add(binding.root.id, reloadFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun setObservers() {
         viewModel.loadedPictures.observe(viewLifecycleOwner) { pictures ->
-            adapter.setPictures(pictures)
+            if (pictures.isNotEmpty()) {
+                adapter.setPictures(pictures)
+            }
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -53,18 +67,9 @@ class MainFragment(
                 }
         }
 
-        viewModel.isError.observe(viewLifecycleOwner) {
-            handler.post {
-                val reloadFragment = ReloadFragment {
-                    viewModel.loadPictures(LOAD_IMAGE_COUNT)
-                    parentFragmentManager.popBackStack()
-                }
-
-                parentFragmentManager
-                    .beginTransaction()
-                    .add(binding.root.id, reloadFragment)
-                    .addToBackStack(null)
-                    .commit()
+        viewModel.isError.observe(viewLifecycleOwner) { state ->
+            if (state) {
+                createErrorFragment()
             }
         }
     }

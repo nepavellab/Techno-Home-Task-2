@@ -23,6 +23,9 @@ class ReloadFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnReload.setOnClickListener { onReload() }
+        binding.btnReload.setOnClickListener {
+            onReload()
+            parentFragmentManager.popBackStack()
+        }
     }
 }
