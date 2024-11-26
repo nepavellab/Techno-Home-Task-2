@@ -48,7 +48,7 @@ class MainFragment(
 
         parentFragmentManager
             .beginTransaction()
-            .add(binding.root.id, reloadFragment)
+            .replace(binding.root.id, reloadFragment)
             .addToBackStack(null)
             .commit()
     }

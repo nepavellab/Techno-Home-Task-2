@@ -10,13 +10,9 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 class PictureViewModel : ViewModel() {
-    val loadedPictures = MutableLiveData<MutableList<PictureItem>>()
+    val loadedPictures = MutableLiveData<MutableList<PictureItem>>(mutableListOf())
     val isLoading = MutableLiveData(false)
     val isError = MutableLiveData(false)
-
-    init {
-        loadedPictures.value = mutableListOf()
-    }
 
     fun loadPictures(count: Int) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -27,6 +23,7 @@ class PictureViewModel : ViewModel() {
                     loadedPictures.value?.add(picture)
                 }
                 loadedPictures.postValue(loadedPictures.value)
+                isError.postValue(false)
             } catch(exception: IOException) {
                 isError.postValue(true)
             } finally {

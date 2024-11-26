@@ -40,7 +40,6 @@ android {
 
 dependencies {
     implementation(libs.squareup.picasso)
-    implementation(libs.github.glide)
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.androidx.core.ktx)
