@@ -20,6 +20,11 @@ class MainFragment(
     private lateinit var adapter: PictureAdapter
     private lateinit var progressBar: ProgressBar
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setRetainInstance(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
